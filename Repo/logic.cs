@@ -19,9 +19,7 @@ namespace datafromexceltryingon3tables.Repo
 
         public string SeedData()
         {
-            /*
-            string filePath = @"C:\Users\kalashri_patil\Downloads\creditControl.xlsx";
-       
+            string filePath = @"C:\Users\nidhi_ray\Downloads\1.Persistent Confidential- Unpaid Invoices Apr-21 .xlsx";
             Application excel = new Application();
             Workbook workbook = excel.Workbooks.Open(filePath);
             Worksheet worksheet = workbook.ActiveSheet;
@@ -31,77 +29,17 @@ namespace datafromexceltryingon3tables.Repo
 
             // Get the number of rows and columns in the worksheet
             int rowCount = usedRange.Rows.Count;
-            int colCount = usedRange.Columns.Count;
-
-   
-
-            // Loop through the rows
-            for (int row = 7; row <= rowCount; row++)
-            {
-                
-                    // Get the cell value
-                    var cellValue = ((Range)worksheet.Cells[row, 1]).Value;
-                    if (cellValue != null)
-                        cellValue = cellValue.ToString();
-                    else
-                        cellValue = " ";
-
-                    // Map the data to the ArPOC model
-                    var arPoc = new ArPOC
-                    {
-                        PocName = cellValue
-                        // add other properties here...
-                    };
-
-                    // Check if the data already exists in the database
-                    var existingArPoc = _context.ArPocs.FirstOrDefault(t => t.PocName == arPoc.PocName);
-                    if (existingArPoc != null)
-                    {
-                        // Update the existing record in the database
-                        existingArPoc.PocName = arPoc.PocName;
-                        // update other properties here...
-                    }
-                    else
-                    {
-                        // Insert a new record into the ArPOC table
-                        _context.ArPocs.Add(arPoc);
-                    }
-                
-                _context.SaveChanges();
-            }
-
-
-            // Save changes to the database
-
-
-            // Close the workbook and release the resources
-            workbook.Close();
-            excel.Quit();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
-            */
-
-            string filePath = @"D:\creditControl.xlsx";
-            Application excel = new Application();
-            Workbook workbook = excel.Workbooks.Open(filePath);
-            Worksheet worksheet = workbook.ActiveSheet;
-
-            // Get the used range of the worksheet
-            Range usedRange = worksheet.UsedRange;
-
-            // Get the number of rows and columns in the worksheet
-            int rowCount = usedRange.Rows.Count;
+            Console.WriteLine("----------------------------------", rowCount);
             int colCount = usedRange.Columns.Count;
             var dataTable = new DataTable();
             for (int col = 1; col <= colCount; col++)
             {
-                string columnName = ((Range)worksheet.Cells[6, col]).Value.ToString();
+                string columnName = ((Range)worksheet.Cells[9, col]).Value.ToString();
                 dataTable.Columns.Add(columnName);
             }
 
             // Loop through the rows
-            for (int row = 7; row <= 124; row++) // assuming the first row is a header row
+            for (int row = 9; row < rowCount; row++) // assuming the first row is a header row
             {
                 // Create a new DataRow
                 DataRow dataRow = dataTable.NewRow();
@@ -139,46 +77,6 @@ namespace datafromexceltryingon3tables.Repo
                 int CompanyCategoryId = AddCompanyCategory(row[10].ToString());
                 int BandId = AddBandId(row[8].ToString());
 
-
-                /*
-                var arPoc = new ArPOC
-                {
-                    PocName = pocName
-                    // add other properties here...
-                };
-
-                // Check if the data already exists in the database
-                var existingArPoc = _context.ArPocs.FirstOrDefault(t => t.PocName == arPoc.PocName);
-                if (existingArPoc == null)
-                {
-
-                    // Insert a new record into the ArPOC table
-                    _context.ArPocs.Add(arPoc);
-                    _context.SaveChanges();
-                    arPocId = arPoc.ArPOCId;
-                    
-
-                }
-                else
-                    arPocId = existingArPoc.ArPOCId;
-                
-
-                var aging = new Aging {
-                    _180Days = row[15].ToString(),
-                    _120180Days = row[16].ToString(),
-                   _90120Days = row[17].ToString(),
-                    _6090Days = row[18].ToString(),
-                    _3060Days = row[19].ToString(),
-                    _030Days = row[20].ToString(),
-                    NotDue = row[21].ToString(),
-                    UnappliedReceiptsReconcialiationPending = row[22].ToString(),
-                    GrandTotal = row[23].ToString(),
-
-
-                };
-                _context.Agings.Add(aging);
-                _context.SaveChanges();
-                */
                 var existingMaster = _context.MasterTables.FirstOrDefault(m=>m.InvoiceId==row[0].ToString());
                 if (existingMaster == null)
                 {

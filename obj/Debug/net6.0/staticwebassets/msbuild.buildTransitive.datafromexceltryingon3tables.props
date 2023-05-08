@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\datafromexceltryingon3tables.props" />
+</Project>
